@@ -1,1 +1,1 @@
-# IoT-Data-Processing-Platform
+# IoT Data Processing Platform
