@@ -7,8 +7,8 @@ import iot.platform.device.web.dto.DeviceCreateRequest;
 import iot.platform.device.web.dto.DeviceResponse;
 import iot.platform.exception.ConflictException;
 import iot.platform.measurement.repository.MeasurementRepository;
-import iot.platform.room.service.RoomService;
 import iot.platform.security.OwnershipGuard;
+import iot.platform.twin.service.DigitalTwinService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +32,7 @@ class DeviceServiceUnitTest {
     private MeasurementRepository measurementRepository;
 
     @Mock
-    private RoomService roomService;
+    private DigitalTwinService twinService;
 
     @Mock
     private OwnershipGuard ownershipGuard;

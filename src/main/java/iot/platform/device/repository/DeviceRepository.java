@@ -1,7 +1,7 @@
 package iot.platform.device.repository;
 
 import iot.platform.device.model.Device;
-import iot.platform.room.model.Room;
+import iot.platform.twin.model.DigitalTwin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +18,7 @@ public interface DeviceRepository extends JpaRepository<Device, UUID> {
 
     boolean existsByOwnerUserIdAndName(UUID ownerUserId, String name);
 
-    long countByRoom(Room room);
+    long countByTwin(DigitalTwin twin);
 
     long countByOwnerUserId(UUID ownerUserId);
 }

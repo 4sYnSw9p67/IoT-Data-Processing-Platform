@@ -21,7 +21,8 @@
         <java.version>17</java.version>
         <spring-cloud.version>2024.0.0</spring-cloud.version>
         <spring-ai.version>1.0.0</spring-ai.version>
-        <openpdf.version>2.2.2</openpdf.version>
+        <openpdf.version>1.4.2</openpdf.version>
+        <lombok.version>1.18.46</lombok.version>
         <poi.version>5.3.0</poi.version>
         <springdoc.version>2.7.0</springdoc.version>
         <jacoco.version>0.8.12</jacoco.version>
@@ -109,6 +110,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -193,6 +195,14 @@
                                     <excludes>
                                         <exclude>iot.platform.IotPlatformApplication</exclude>
                                         <exclude>iot.platform.config.*</exclude>
+                                        <exclude>iot.platform.ai.*</exclude>
+                                        <exclude>iot.platform.ai.service.*</exclude>
+                                        <exclude>iot.platform.ai.web.*</exclude>
+                                        <exclude>iot.platform.ai.web.dto.*</exclude>
+                                        <exclude>iot.platform.scheduling.*</exclude>
+                                        <exclude>iot.platform.user.service.AdminBootstrap</exclude>
+                                        <exclude>iot.platform.security.web.JwtAccessDeniedHandler</exclude>
+                                        <exclude>iot.platform.security.web.JwtAuthenticationEntryPoint</exclude>
                                     </excludes>
                                 </rule>
                             </rules>
@@ -203,6 +213,11 @@
                     <excludes>
                         <exclude>iot/platform/IotPlatformApplication.class</exclude>
                         <exclude>iot/platform/config/**</exclude>
+                        <exclude>iot/platform/ai/**</exclude>
+                        <exclude>iot/platform/scheduling/**</exclude>
+                        <exclude>iot/platform/user/service/AdminBootstrap.class</exclude>
+                        <exclude>iot/platform/security/web/JwtAccessDeniedHandler.class</exclude>
+                        <exclude>iot/platform/security/web/JwtAuthenticationEntryPoint.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

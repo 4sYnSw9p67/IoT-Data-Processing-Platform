@@ -3,7 +3,7 @@ package iot.platform.device.service;
 import iot.platform.aspect.Auditable;
 import iot.platform.device.model.Device;
 import iot.platform.device.repository.DeviceRepository;
-import iot.platform.device.web.dto.AssignRoomRequest;
+import iot.platform.device.web.dto.AssignTwinRequest;
 import iot.platform.device.web.dto.DeviceCreateRequest;
 import iot.platform.device.web.dto.DeviceMapper;
 import iot.platform.device.web.dto.DeviceResponse;
@@ -11,9 +11,9 @@ import iot.platform.device.web.dto.DeviceUpdateRequest;
 import iot.platform.exception.ConflictException;
 import iot.platform.exception.NotFoundException;
 import iot.platform.measurement.repository.MeasurementRepository;
-import iot.platform.room.model.Room;
-import iot.platform.room.service.RoomService;
 import iot.platform.security.OwnershipGuard;
+import iot.platform.twin.model.DigitalTwin;
+import iot.platform.twin.service.DigitalTwinService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class DeviceService {
 
     private final DeviceRepository deviceRepository;
     private final MeasurementRepository measurementRepository;
-    private final RoomService roomService;
+    private final DigitalTwinService twinService;
     private final OwnershipGuard ownershipGuard;
 
     @Transactional(readOnly = true)
@@ -52,14 +52,14 @@ public class DeviceService {
         }
         validateThresholds(request.minTemperatureC(), request.maxTemperatureC(),
                 request.minHumidityPct(), request.maxHumidityPct());
-        Room room = null;
-        if (request.roomId() != null) {
-            room = roomService.loadOwned(request.roomId());
+        DigitalTwin twin = null;
+        if (request.twinId() != null) {
+            twin = twinService.loadOwned(request.twinId());
         }
         Device device = Device.builder()
                 .name(request.name())
                 .type(request.type())
-                .room(room)
+                .twin(twin)
                 .ownerUserId(ownerUserId)
                 .minTemperatureC(request.minTemperatureC())
                 .maxTemperatureC(request.maxTemperatureC())
@@ -103,17 +103,17 @@ public class DeviceService {
         return DeviceMapper.toResponse(device);
     }
 
-    @Auditable("device.assignRoom")
+    @Auditable("device.assignTwin")
     @Transactional
-    public DeviceResponse assignRoom(UUID id, AssignRoomRequest request) {
+    public DeviceResponse assignTwin(UUID id, AssignTwinRequest request) {
         Device device = loadOwned(id);
-        if (request.roomId() == null) {
-            device.setRoom(null);
+        if (request.twinId() == null) {
+            device.setTwin(null);
         } else {
-            Room room = roomService.loadOwned(request.roomId());
-            device.setRoom(room);
+            DigitalTwin twin = twinService.loadOwned(request.twinId());
+            device.setTwin(twin);
         }
-        log.info("Device id={} assigned to room {}", id, request.roomId());
+        log.info("Device id={} assigned to twin {}", id, request.twinId());
         return DeviceMapper.toResponse(device);
     }
 

@@ -1,7 +1,7 @@
 package iot.platform.device.web;
 
 import iot.platform.device.service.DeviceService;
-import iot.platform.device.web.dto.AssignRoomRequest;
+import iot.platform.device.web.dto.AssignTwinRequest;
 import iot.platform.device.web.dto.DeviceCreateRequest;
 import iot.platform.device.web.dto.DeviceResponse;
 import iot.platform.device.web.dto.DeviceUpdateRequest;
@@ -50,9 +50,9 @@ public class DeviceController {
         return ResponseEntity.ok(deviceService.update(id, request));
     }
 
-    @PutMapping("/{id}/room")
-    public ResponseEntity<DeviceResponse> assignRoom(@PathVariable UUID id, @RequestBody AssignRoomRequest request) {
-        return ResponseEntity.ok(deviceService.assignRoom(id, request));
+    @PutMapping("/{id}/twin")
+    public ResponseEntity<DeviceResponse> assignTwin(@PathVariable UUID id, @RequestBody AssignTwinRequest request) {
+        return ResponseEntity.ok(deviceService.assignTwin(id, request));
     }
 
     @DeleteMapping("/{id}")

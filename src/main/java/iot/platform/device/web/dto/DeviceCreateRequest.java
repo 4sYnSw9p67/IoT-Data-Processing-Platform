@@ -18,7 +18,7 @@ public record DeviceCreateRequest(
         @NotNull
         DeviceType type,
 
-        UUID roomId,
+        UUID twinId,
 
         @DecimalMin("-100.0")
         @DecimalMax("100.0")

@@ -1,6 +1,6 @@
 package iot.platform.device.model;
 
-import iot.platform.room.model.Room;
+import iot.platform.twin.model.DigitalTwin;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,8 +45,8 @@ public class Device {
     private DeviceType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @JoinColumn(name = "twin_id")
+    private DigitalTwin twin;
 
     @Column(name = "owner_user_id", nullable = false)
     private UUID ownerUserId;

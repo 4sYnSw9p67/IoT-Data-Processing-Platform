@@ -1,6 +1,7 @@
 package iot.platform.device.web.dto;
 
 import iot.platform.device.model.DeviceType;
+import iot.platform.twin.model.TwinType;
 import lombok.Builder;
 
 import java.time.Instant;
@@ -11,8 +12,9 @@ public record DeviceResponse(
         UUID id,
         String name,
         DeviceType type,
-        UUID roomId,
-        String roomName,
+        UUID twinId,
+        String twinName,
+        TwinType twinType,
         UUID ownerUserId,
         Double minTemperatureC,
         Double maxTemperatureC,

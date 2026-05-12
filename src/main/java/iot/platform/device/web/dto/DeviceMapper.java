@@ -1,7 +1,7 @@
 package iot.platform.device.web.dto;
 
 import iot.platform.device.model.Device;
-import iot.platform.room.model.Room;
+import iot.platform.twin.model.DigitalTwin;
 
 public final class DeviceMapper {
 
@@ -9,13 +9,14 @@ public final class DeviceMapper {
     }
 
     public static DeviceResponse toResponse(Device device) {
-        Room room = device.getRoom();
+        DigitalTwin twin = device.getTwin();
         return DeviceResponse.builder()
                 .id(device.getId())
                 .name(device.getName())
                 .type(device.getType())
-                .roomId(room == null ? null : room.getId())
-                .roomName(room == null ? null : room.getName())
+                .twinId(twin == null ? null : twin.getId())
+                .twinName(twin == null ? null : twin.getName())
+                .twinType(twin == null ? null : twin.getType())
                 .ownerUserId(device.getOwnerUserId())
                 .minTemperatureC(device.getMinTemperatureC())
                 .maxTemperatureC(device.getMaxTemperatureC())

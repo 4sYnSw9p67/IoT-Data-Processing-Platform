@@ -33,35 +33,49 @@ class DeviceFlowApiTest {
     void fullDeviceLifecycleWorks() throws Exception {
         String token = registerAndGetToken("zoe", "zoe@example.com", "ZoePass!123");
 
-        String roomBody = """
-                { "name": "Living Room", "floor": "1", "color": "#aabbcc" }
+        String siteBody = """
+                { "name": "Home", "type": "SITE" }
                 """;
-        MvcResult roomResult = mockMvc.perform(post("/api/rooms")
+        MvcResult siteResult = mockMvc.perform(post("/api/twins")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(siteBody))
+                .andExpect(status().isCreated())
+                .andReturn();
+        String siteId = objectMapper.readTree(siteResult.getResponse().getContentAsByteArray()).get("id").asText();
+
+        String roomBody = """
+                { "name": "Living Room", "type": "ROOM", "parentId": "%s", "floor": "1", "color": "#aabbcc" }
+                """.formatted(siteId);
+        MvcResult roomResult = mockMvc.perform(post("/api/twins")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roomBody))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Living Room"))
+                .andExpect(jsonPath("$.type").value("ROOM"))
+                .andExpect(jsonPath("$.parentId").value(siteId))
                 .andReturn();
-        String roomId = objectMapper.readTree(roomResult.getResponse().getContentAsByteArray()).get("id").asText();
+        String twinId = objectMapper.readTree(roomResult.getResponse().getContentAsByteArray()).get("id").asText();
 
         String deviceBody = """
                 {
                   "name": "TempSensor-LR",
                   "type": "COMBO",
-                  "roomId": "%s",
+                  "twinId": "%s",
                   "minTemperatureC": 16.0,
                   "maxTemperatureC": 27.0,
                   "minHumidityPct": 30.0,
                   "maxHumidityPct": 70.0
                 }
-                """.formatted(roomId);
+                """.formatted(twinId);
         MvcResult deviceResult = mockMvc.perform(post("/api/devices")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(deviceBody))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.roomId").value(roomId))
+                .andExpect(jsonPath("$.twinId").value(twinId))
+                .andExpect(jsonPath("$.twinType").value("ROOM"))
                 .andExpect(jsonPath("$.active").value(true))
                 .andReturn();
         String deviceId = objectMapper.readTree(deviceResult.getResponse().getContentAsByteArray()).get("id").asText();
@@ -86,19 +100,25 @@ class DeviceFlowApiTest {
                         .content(invalidUpdate))
                 .andExpect(status().isConflict());
 
-        mockMvc.perform(put("/api/devices/" + deviceId + "/room")
+        mockMvc.perform(put("/api/devices/" + deviceId + "/twin")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"roomId\": null}"))
+                        .content("{\"twinId\": null}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.roomId").doesNotExist());
+                .andExpect(jsonPath("$.twinId").doesNotExist());
 
-        mockMvc.perform(get("/api/rooms")
+        mockMvc.perform(get("/api/twins")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].deviceCount").value(0));
+                .andExpect(jsonPath("$[?(@.id == '" + twinId + "')].deviceCount").value(0));
 
-        mockMvc.perform(delete("/api/rooms/" + roomId)
+        mockMvc.perform(get("/api/twins/tree")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Home"))
+                .andExpect(jsonPath("$[0].children[0].name").value("Living Room"));
+
+        mockMvc.perform(delete("/api/twins/" + twinId)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
 

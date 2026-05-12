@@ -40,7 +40,7 @@ public class RedisCacheConfig {
                 .cacheDefaults(baseConfig)
                 .withCacheConfiguration("forecast", baseConfig.entryTtl(Duration.ofMinutes(30)))
                 .withCacheConfiguration("device-latest-reading", baseConfig.entryTtl(Duration.ofMinutes(5)))
-                .withCacheConfiguration("room-devices", baseConfig.entryTtl(Duration.ofMinutes(10)))
+                .withCacheConfiguration("twin-devices", baseConfig.entryTtl(Duration.ofMinutes(10)))
                 .build();
     }
 }

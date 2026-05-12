@@ -1,0 +1,127 @@
+{
+  "app": {
+    "title": "IoT Data Processing Platform",
+    "subtitle": "Environmental monitoring for your home"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "devices": "Devices",
+    "twins": "Spaces",
+    "alerts": "Alerts",
+    "rules": "Automation",
+    "forecast": "Forecast",
+    "reports": "Reports",
+    "ai": "AI Assistant",
+    "admin": "Admin",
+    "profile": "Profile",
+    "about": "About",
+    "logout": "Sign out"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Create an account",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Continue",
+    "needAccount": "Need an account?",
+    "haveAccount": "Already have an account?",
+    "error": "Authentication failed"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "loading": "Loading…",
+    "empty": "Nothing to show yet.",
+    "search": "Search",
+    "actions": "Actions",
+    "confirm": "Are you sure?"
+  },
+  "dashboard": {
+    "latestReadings": "Latest readings",
+    "activeAlerts": "Open alerts",
+    "deviceCount": "Devices",
+    "twinCount": "Spaces",
+    "noReadings": "No readings yet — start ingestion."
+  },
+  "devices": {
+    "title": "Devices",
+    "name": "Name",
+    "type": "Type",
+    "twin": "Space",
+    "active": "Active",
+    "thresholds": "Thresholds",
+    "minTempC": "Min temperature (°C)",
+    "maxTempC": "Max temperature (°C)",
+    "minHumidityPct": "Min humidity (%)",
+    "maxHumidityPct": "Max humidity (%)"
+  },
+  "twins": {
+    "title": "Digital twins",
+    "subtitle": "Model your environment as a tree: Site › Building › Floor › Room › Zone, plus Outdoor and Equipment.",
+    "create": "New twin",
+    "name": "Name",
+    "type": "Type",
+    "parent": "Parent",
+    "parentRoot": "— (root)",
+    "parentRootOnly": "Root only (no parent)",
+    "floor": "Floor",
+    "color": "Color",
+    "description": "Description",
+    "empty": "No twins yet — start by creating a SITE.",
+    "deviceCount_one": "{{count}} device",
+    "deviceCount_other": "{{count}} devices",
+    "childCount_one": "{{count}} child",
+    "childCount_other": "{{count}} children"
+  },
+  "alerts": {
+    "title": "Alerts",
+    "severity": "Severity",
+    "source": "Source",
+    "raisedAt": "Raised at",
+    "acknowledge": "Acknowledge"
+  },
+  "rules": {
+    "title": "Automation rules",
+    "condition": "Condition",
+    "threshold": "Threshold",
+    "enabled": "Enabled"
+  },
+  "forecast": {
+    "title": "Weather forecast",
+    "label": "Label",
+    "country": "Country",
+    "lat": "Latitude",
+    "lng": "Longitude",
+    "refresh": "Refresh",
+    "noData": "No forecast yet — refresh to pull."
+  },
+  "reports": {
+    "title": "Reports",
+    "from": "From",
+    "to": "To",
+    "format": "Format",
+    "download": "Download"
+  },
+  "ai": {
+    "title": "AI assistant",
+    "ask": "Ask",
+    "placeholder": "Ask about your environment…",
+    "disabled": "AI assistant is disabled. Configure OPENAI_API_KEY."
+  },
+  "admin": {
+    "title": "User management",
+    "role": "Role",
+    "enabled": "Enabled"
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "about": {
+    "title": "About",
+    "body": "This platform aggregates temperature and humidity data from Raspberry Pi sensors and correlates them with weather forecasts."
+  }
+}
