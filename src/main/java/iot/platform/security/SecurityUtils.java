@@ -16,14 +16,23 @@ public final class SecurityUtils {
     }
 
     public static UUID currentUserId() {
-        return currentJwt()
-                .map(Jwt::getSubject)
-                .map(UUID::fromString)
+        return currentUserIdOptional()
                 .orElseThrow(() -> new InvalidTokenException("No authenticated principal"));
     }
 
     public static Optional<UUID> currentUserIdOptional() {
-        return currentJwt().map(Jwt::getSubject).map(UUID::fromString);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Optional.empty();
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof Jwt jwt) {
+            return Optional.of(UUID.fromString(jwt.getSubject()));
+        }
+        if (principal instanceof UUID uuid) {
+            return Optional.of(uuid);
+        }
+        return Optional.empty();
     }
 
     public static Optional<Jwt> currentJwt() {

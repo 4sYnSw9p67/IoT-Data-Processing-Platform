@@ -2,6 +2,7 @@ package iot.platform.measurement.service;
 
 import iot.platform.device.model.Device;
 import iot.platform.device.service.DeviceService;
+import iot.platform.event.MeasurementIngestedEvent;
 import iot.platform.measurement.model.Measurement;
 import iot.platform.measurement.repository.MeasurementRepository;
 import iot.platform.measurement.web.dto.MeasurementCreateRequest;
@@ -9,6 +10,7 @@ import iot.platform.measurement.web.dto.MeasurementMapper;
 import iot.platform.measurement.web.dto.MeasurementResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class MeasurementService {
 
     private final MeasurementRepository measurementRepository;
     private final DeviceService deviceService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public Page<MeasurementResponse> listForDevice(UUID deviceId, Pageable pageable) {
@@ -65,6 +68,8 @@ public class MeasurementService {
                 .humidityPct(request.humidityPct())
                 .rawPayload(request.rawPayload())
                 .build();
-        return measurementRepository.save(entity);
+        Measurement saved = measurementRepository.save(entity);
+        eventPublisher.publishEvent(new MeasurementIngestedEvent(device.getId(), saved.getId(), saved));
+        return saved;
     }
 }
