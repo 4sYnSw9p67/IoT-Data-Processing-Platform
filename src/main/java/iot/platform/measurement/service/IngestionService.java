@@ -1,5 +1,6 @@
 package iot.platform.measurement.service;
 
+import iot.platform.aspect.Auditable;
 import iot.platform.device.model.Device;
 import iot.platform.device.repository.DeviceRepository;
 import iot.platform.exception.ConflictException;
@@ -57,6 +58,7 @@ public class IngestionService {
         return new IngestResult(accepted, failures);
     }
 
+    @Auditable("measurement.bulkUpload")
     @Transactional
     public IngestResult ingestCsv(UUID ownerUserId, MultipartFile file) {
         List<IngestPoint> points = parseCsv(file);

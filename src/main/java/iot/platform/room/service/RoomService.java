@@ -1,5 +1,6 @@
 package iot.platform.room.service;
 
+import iot.platform.aspect.Auditable;
 import iot.platform.device.repository.DeviceRepository;
 import iot.platform.exception.ConflictException;
 import iot.platform.exception.NotFoundException;
@@ -40,6 +41,7 @@ public class RoomService {
         return RoomMapper.toResponse(room, deviceRepository.countByRoom(room));
     }
 
+    @Auditable("room.create")
     @Transactional
     public RoomResponse create(UUID ownerUserId, RoomRequest request) {
         if (roomRepository.existsByOwnerUserIdAndName(ownerUserId, request.name())) {
@@ -56,6 +58,7 @@ public class RoomService {
         return RoomMapper.toResponse(saved, 0L);
     }
 
+    @Auditable("room.update")
     @Transactional
     public RoomResponse update(UUID id, RoomRequest request) {
         Room room = loadOwned(id);
@@ -70,6 +73,7 @@ public class RoomService {
         return RoomMapper.toResponse(room, deviceRepository.countByRoom(room));
     }
 
+    @Auditable("room.delete")
     @Transactional
     public void delete(UUID id) {
         Room room = loadOwned(id);

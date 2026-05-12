@@ -2,6 +2,7 @@ package iot.platform.alert.service;
 
 import iot.platform.alert.model.Alert;
 import iot.platform.alert.repository.AlertRepository;
+import iot.platform.aspect.Auditable;
 import iot.platform.alert.web.dto.AlertMapper;
 import iot.platform.alert.web.dto.AlertResponse;
 import iot.platform.event.AlertRaisedEvent;
@@ -33,6 +34,7 @@ public class AlertService {
         return alerts.stream().map(AlertMapper::toResponse).toList();
     }
 
+    @Auditable("alert.acknowledge")
     @Transactional
     public AlertResponse acknowledge(UUID id) {
         Alert alert = alertRepository.findById(id)

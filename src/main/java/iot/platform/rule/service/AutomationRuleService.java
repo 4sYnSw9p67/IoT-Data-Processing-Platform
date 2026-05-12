@@ -1,5 +1,6 @@
 package iot.platform.rule.service;
 
+import iot.platform.aspect.Auditable;
 import iot.platform.device.model.Device;
 import iot.platform.device.service.DeviceService;
 import iot.platform.exception.NotFoundException;
@@ -34,6 +35,7 @@ public class AutomationRuleService {
                 .toList();
     }
 
+    @Auditable("rule.create")
     @Transactional
     public RuleResponse create(UUID ownerUserId, RuleRequest request) {
         Device device = deviceService.loadOwned(request.deviceId());
@@ -52,6 +54,7 @@ public class AutomationRuleService {
         return RuleMapper.toResponse(saved);
     }
 
+    @Auditable("rule.update")
     @Transactional
     public RuleResponse update(UUID id, RuleUpdateRequest request) {
         AutomationRule rule = loadOwned(id);
@@ -74,6 +77,7 @@ public class AutomationRuleService {
         return RuleMapper.toResponse(rule);
     }
 
+    @Auditable("rule.delete")
     @Transactional
     public void delete(UUID id) {
         AutomationRule rule = loadOwned(id);

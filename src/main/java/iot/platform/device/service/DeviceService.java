@@ -1,5 +1,6 @@
 package iot.platform.device.service;
 
+import iot.platform.aspect.Auditable;
 import iot.platform.device.model.Device;
 import iot.platform.device.repository.DeviceRepository;
 import iot.platform.device.web.dto.AssignRoomRequest;
@@ -43,6 +44,7 @@ public class DeviceService {
         return DeviceMapper.toResponse(loadOwned(id));
     }
 
+    @Auditable("device.create")
     @Transactional
     public DeviceResponse create(UUID ownerUserId, DeviceCreateRequest request) {
         if (deviceRepository.existsByOwnerUserIdAndName(ownerUserId, request.name())) {
@@ -70,6 +72,7 @@ public class DeviceService {
         return DeviceMapper.toResponse(saved);
     }
 
+    @Auditable("device.update")
     @Transactional
     public DeviceResponse update(UUID id, DeviceUpdateRequest request) {
         Device device = loadOwned(id);
@@ -100,6 +103,7 @@ public class DeviceService {
         return DeviceMapper.toResponse(device);
     }
 
+    @Auditable("device.assignRoom")
     @Transactional
     public DeviceResponse assignRoom(UUID id, AssignRoomRequest request) {
         Device device = loadOwned(id);
@@ -113,6 +117,7 @@ public class DeviceService {
         return DeviceMapper.toResponse(device);
     }
 
+    @Auditable("device.delete")
     @Transactional
     public void delete(UUID id) {
         Device device = loadOwned(id);
