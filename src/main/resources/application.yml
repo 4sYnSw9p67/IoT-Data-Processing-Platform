@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: iot-data-processing-platform
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+
+server:
+  port: 8080
+  error:
+    include-message: never
+    include-binding-errors: never
+
+logging:
+  level:
+    iot.platform: INFO
+    org.springframework.security: INFO
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+app:
+  security:
+    jwt:
+      issuer: iot-platform
+      access-token-ttl-minutes: 30
+      refresh-token-ttl-days: 14
+    api-key:
+      header-name: X-Api-Key
+  forecast-client:
+    base-url: ${FORECAST_SERVICE_URL:http://localhost:8081}
+  scheduling:
+    measurement-aggregation-cron: "0 0 3 * * *"
+    forecast-refresh-fixed-delay-ms: 900000
+    raw-measurement-retention-days: 90
+  ai:
+    enabled: ${AI_ENABLED:false}
+    measurement-context-hours: 24
+
+spring.ai:
+  openai:
+    api-key: ${OPENAI_API_KEY:disabled}
+    chat:
+      options:
+        model: gpt-4o-mini
+        temperature: 0.4

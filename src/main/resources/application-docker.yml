@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres-main:5432/iot_platform
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  data:
+    redis:
+      host: redis
+      port: 6379
+      timeout: 2000ms
+
+app:
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost}
+  forecast-client:
+    base-url: http://api-service:8081
